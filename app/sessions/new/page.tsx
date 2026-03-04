@@ -14,7 +14,6 @@ const skills=[
 export default function NewSession(){
 
 const [notes,setNotes]=useState('')
-const [file,setFile]=useState<any>(null)
 const [scores,setScores]=useState<any>({})
 
 function updateScore(skill,value){
@@ -23,26 +22,9 @@ setScores({...scores,[skill]:value})
 
 async function save(){
 
-let photoUrl=null
-
-if(file){
-
-const fileName=Date.now()+"-"+file.name
-
-const {data}=await supabase.storage
-.from('session-photos')
-.upload(fileName,file)
-
-if(data){
-photoUrl=data.path
-}
-
-}
-
 const {data:session}=await supabase.from('training_sessions').insert({
 date:new Date(),
-notes,
-photo_url:photoUrl
+notes
 }).select().single()
 
 for(const skill in scores){
@@ -92,12 +74,6 @@ onChange={e=>updateScore(skill,e.target.value)}
 </div>
 
 ))}
-
-<input
-type="file"
-className="mb-4"
-onChange={e=>setFile(e.target.files?.[0])}
-/>
 
 <button
 onClick={save}

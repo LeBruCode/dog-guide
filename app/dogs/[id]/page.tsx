@@ -4,6 +4,7 @@
 import {useEffect,useState} from 'react'
 import {supabase} from '../../../lib/supabaseClient'
 import TimelineItem from '../../../components/TimelineItem'
+import ProgressChart from '../../../components/ProgressChart'
 
 export default function Dog({params}:any){
 
@@ -26,7 +27,7 @@ const {data:s}=await supabase
 .from('training_sessions')
 .select('*')
 .eq('dog_id',params.id)
-.order('date',{ascending:false})
+.order('date',{ascending:true})
 
 setSessions(s||[])
 
@@ -52,11 +53,19 @@ Nouvelle séance
 
 </div>
 
+<div className="bg-white p-4 rounded-xl shadow mb-4">
+
+<h3 className="font-semibold mb-3">Progression</h3>
+
+<ProgressChart sessions={sessions}/>
+
+</div>
+
 <div className="bg-white p-4 rounded-xl shadow">
 
 <h3 className="font-semibold mb-4">Timeline</h3>
 
-{sessions.map(s=>(
+{sessions.reverse().map((s:any)=>(
 <TimelineItem key={s.id} session={s}/>
 ))}
 

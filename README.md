@@ -1,13 +1,10 @@
 
-Guide Dog Trainer V3.2
+Guide Dog Trainer V3.3
 
-Features:
-- Dashboard chiens
-- Fiche chien
-- Bouton nouvelle séance
-- Timeline séances
-- Photo séance
-- Slider notation compétences
-- Fiche séance détaillée
-- Historique compétences par séance
-- Compatible Render
+New feature:
+Graphique de progression pour chaque chien.
+
+Le graphique utilise Chart.js et montre
+l'évolution moyenne des scores au fil des séances.
+
+Compatible Render.

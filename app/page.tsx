@@ -32,11 +32,6 @@ return(
 Chiens en formation
 </h2>
 
-<a href="/dogs/new"
-className="bg-black text-white text-sm px-3 py-1 rounded">
-+ Ajouter
-</a>
-
 </div>
 
 {dogs.map(d=>(

@@ -60,14 +60,10 @@ Séance
 Compétences travaillées
 </h3>
 
-{skills.map(s=>(
-
+{skills.map((s:any)=>(
 <div key={s.id} className="mb-2 text-sm">
-
 {s.skill_name} : {s.score}/5
-
 </div>
-
 ))}
 
 </div>
