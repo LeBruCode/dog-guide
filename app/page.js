@@ -1,10 +1,10 @@
 
 'use client'
 
-export const dynamic = 'force-dynamic'
+export const dynamic='force-dynamic'
 
-import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
+import {useEffect,useState} from 'react'
+import {supabase} from '../lib/supabaseClient'
 import Link from 'next/link'
 
 export default function Home(){
@@ -26,20 +26,15 @@ if(data) setDogs(data)
 
 }
 
-return (
+return(
 
 <div>
 
-<h2 className="text-xl mb-4">Chiens</h2>
-
 {dogs.map(d=>(
-
-<Link key={d.id} href={`/dogs/${d.id}`}>
-<div className="bg-white p-4 rounded shadow mb-3 cursor-pointer">
-{d.name}
-</div>
+<Link key={d.id} href={`/dogs/${d.id}`} className="card">
+<b>{d.name}</b>
+<div style={{fontSize:13,color:"#666"}}>{d.breed}</div>
 </Link>
-
 ))}
 
 </div>

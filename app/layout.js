@@ -6,11 +6,17 @@ export const dynamic = 'force-dynamic'
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <body className="bg-gray-100">
-        <div className="max-w-xl mx-auto min-h-screen p-4">
-          <h1 className="text-2xl font-bold mb-6">Guide Dog Trainer</h1>
+      <body>
+        <div className="container">
+          <div className="header">Guide Dog Trainer</div>
           {children}
         </div>
+
+        <div className="nav">
+          <a href="/">🐕 Chiens</a>
+          <a href="/sessions/new">➕ Séance</a>
+        </div>
+
       </body>
     </html>
   )

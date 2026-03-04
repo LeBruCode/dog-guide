@@ -1,10 +1,11 @@
 
 'use client'
 
-export const dynamic = 'force-dynamic'
+export const dynamic='force-dynamic'
 
-import { useEffect, useState } from 'react'
-import { supabase } from '../../../lib/supabaseClient'
+import {useEffect,useState} from 'react'
+import {supabase} from '../../../lib/supabaseClient'
+import ScoreSelector from '../../../components/ScoreSelector'
 
 const skills=[
 "Marche au pied",
@@ -16,14 +17,12 @@ const skills=[
 export default function NewSession({searchParams}){
 
 const [dogs,setDogs]=useState([])
-const [dogId,setDogId]=useState(searchParams?.dog || '')
+const [dogId,setDogId]=useState(searchParams?.dog||'')
 const [notes,setNotes]=useState('')
 const [scores,setScores]=useState({})
 
 useEffect(()=>{
-
 loadDogs()
-
 },[])
 
 async function loadDogs(){
@@ -33,14 +32,12 @@ const {data}=await supabase
 .select('*')
 .order('name')
 
-if(data) setDogs(data)
+if(data)setDogs(data)
 
 }
 
 function updateScore(skill,val){
-
 setScores({...scores,[skill]:val})
-
 }
 
 async function save(){
@@ -74,56 +71,45 @@ alert("Séance enregistrée")
 
 }
 
-return (
+return(
 
-<div className="bg-white p-4 rounded shadow">
+<div className="card">
 
-<h2 className="text-xl mb-4">Nouvelle séance</h2>
+<h2>Nouvelle séance</h2>
 
 <select
 value={dogId}
-onChange={(e)=>setDogId(e.target.value)}
-className="border p-2 w-full mb-3"
+onChange={e=>setDogId(e.target.value)}
 >
-
 <option value="">Sélectionner un chien</option>
-
 {dogs.map(d=>(
 <option key={d.id} value={d.id}>
 {d.name}
 </option>
 ))}
-
 </select>
 
 <textarea
 placeholder="Notes"
-className="border p-2 w-full mb-3"
-onChange={(e)=>setNotes(e.target.value)}
+onChange={e=>setNotes(e.target.value)}
 />
 
 {skills.map(skill=>(
 
-<div key={skill} className="mb-3">
+<div key={skill} className="score-row">
 
-<p className="text-sm">{skill}</p>
+<p style={{fontSize:14}}>{skill}</p>
 
-<input
-type="range"
-min="1"
-max="5"
-className="w-full"
-onChange={(e)=>updateScore(skill,e.target.value)}
+<ScoreSelector
+value={scores[skill]}
+onChange={(v)=>updateScore(skill,v)}
 />
 
 </div>
 
 ))}
 
-<button
-onClick={save}
-className="bg-black text-white w-full p-2 rounded"
->
+<button className="btn" onClick={save}>
 Enregistrer
 </button>
 

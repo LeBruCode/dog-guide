@@ -1,4 +1,83 @@
 
-body {
-  font-family: system-ui;
+body{
+font-family:system-ui;
+background:#f4f6fb;
+margin:0;
+}
+
+.container{
+max-width:680px;
+margin:auto;
+padding:20px;
+padding-bottom:90px;
+}
+
+.header{
+font-size:22px;
+font-weight:600;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:18px;
+border-radius:14px;
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
+margin-bottom:14px;
+}
+
+.btn{
+background:#111;
+color:white;
+padding:10px 14px;
+border-radius:10px;
+border:none;
+cursor:pointer;
+}
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+border-top:1px solid #eee;
+display:flex;
+justify-content:space-around;
+padding:12px;
+font-size:14px;
+}
+
+.score-row{
+margin-bottom:14px;
+}
+
+.score-buttons{
+display:flex;
+gap:6px;
+margin-top:6px;
+}
+
+.score-btn{
+flex:1;
+padding:8px;
+border-radius:8px;
+border:1px solid #ddd;
+text-align:center;
+cursor:pointer;
+font-size:13px;
+}
+
+.score-active{
+background:#22c55e;
+color:white;
+border-color:#22c55e;
+}
+
+textarea,select{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #ddd;
+margin-bottom:10px;
 }

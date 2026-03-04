@@ -24,11 +24,11 @@ Legend
 export default function ProgressChart({points}){
 
 const data={
-labels: points.map(p=>p.date),
+labels:points.map(p=>p.date),
 datasets:[{
 label:'Progression',
-data: points.map(p=>p.score),
-borderColor:'rgb(34,197,94)',
+data:points.map(p=>p.score),
+borderColor:'#22c55e',
 backgroundColor:'rgba(34,197,94,0.2)'
 }]
 }
