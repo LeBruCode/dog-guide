@@ -23,23 +23,17 @@ if(data) setDogs(data)
 }
 
 return(
-
 <div>
 
-<div className="flex justify-between mb-4">
-
-<h2 className="text-xl font-semibold">
+<h2 className="text-xl font-semibold mb-4">
 Chiens en formation
 </h2>
-
-</div>
 
 {dogs.map(d=>(
 <DogCard key={d.id} dog={d}/>
 ))}
 
 </div>
-
 )
 
 }

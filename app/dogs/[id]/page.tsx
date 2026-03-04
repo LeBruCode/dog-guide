@@ -35,12 +35,16 @@ setSessions(s||[])
 
 if(!dog) return <div>Chargement...</div>
 
+const chartData=sessions.map((s:any)=>({
+date:s.date,
+score:3
+}))
+
 return(
 
 <div>
 
 <div className="bg-white p-4 rounded-xl shadow mb-4">
-
 <h2 className="text-xl font-semibold">{dog.name}</h2>
 <p className="text-sm text-gray-600">{dog.breed}</p>
 
@@ -54,18 +58,14 @@ Nouvelle séance
 </div>
 
 <div className="bg-white p-4 rounded-xl shadow mb-4">
-
 <h3 className="font-semibold mb-3">Progression</h3>
-
-<ProgressChart sessions={sessions}/>
-
+<ProgressChart dataPoints={chartData}/>
 </div>
 
 <div className="bg-white p-4 rounded-xl shadow">
-
 <h3 className="font-semibold mb-4">Timeline</h3>
 
-{sessions.reverse().map((s:any)=>(
+{sessions.slice().reverse().map((s:any)=>(
 <TimelineItem key={s.id} session={s}/>
 ))}
 

@@ -8,7 +8,6 @@ CategoryScale,
 LinearScale,
 PointElement,
 LineElement,
-Title,
 Tooltip,
 Legend
 } from 'chart.js'
@@ -18,27 +17,21 @@ CategoryScale,
 LinearScale,
 PointElement,
 LineElement,
-Title,
 Tooltip,
 Legend
 )
 
-export default function ProgressChart({sessions}:any){
+export default function ProgressChart({dataPoints}:any){
 
-const labels=sessions.map((s:any)=>s.date)
-
-const scores=sessions.map((s:any)=>s.avg_score || 0)
+const labels=dataPoints.map((d:any)=>d.date)
+const scores=dataPoints.map((d:any)=>d.score)
 
 const data={
 labels,
-datasets:[
-{
+datasets:[{
 label:'Progression',
-data:scores,
-borderColor:'rgb(34,197,94)',
-backgroundColor:'rgba(34,197,94,0.2)'
-}
-]
+data:scores
+}]
 }
 
 return <Line data={data}/>
