@@ -4,25 +4,24 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { supabase } from '../../../lib/supabaseClient'
 
-const skills = [
-  "Marche au pied",
-  "Arrêt trottoir",
-  "Évitement obstacles",
-  "Ignorer distractions"
-]
-
 export default function NewSession() {
 
   const params = useSearchParams()
 
   const [dogs, setDogs] = useState<any[]>([])
+  const [skills, setSkills] = useState<any[]>([])
+
   const [dogId, setDogId] = useState('')
   const [notes, setNotes] = useState('')
+
   const [scores, setScores] = useState<Record<string, number>>({})
+
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+
     loadDogs()
+    loadSkills()
 
     const dog = params.get("dog")
     if (dog) setDogId(dog)
@@ -45,11 +44,27 @@ export default function NewSession() {
 
   }
 
-  function updateScore(skill: string, value: number) {
+  async function loadSkills() {
+
+    const { data, error } = await supabase
+      .from('skills')
+      .select('*')
+      .order('name')
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    if (data) setSkills(data)
+
+  }
+
+  function updateScore(skillId: string, value: number) {
 
     setScores(prev => ({
       ...prev,
-      [skill]: value
+      [skillId]: value
     }))
 
   }
@@ -77,10 +92,10 @@ export default function NewSession() {
 
       if (sessionError) throw sessionError
 
-      const skillsData = Object.entries(scores).map(([skill, score]) => ({
+      const skillsData = Object.entries(scores).map(([skillId, result]) => ({
         session_id: session.id,
-        skill_name: skill,
-        score
+        skill_id: skillId,
+        result
       }))
 
       if (skillsData.length > 0) {
@@ -146,16 +161,17 @@ export default function NewSession() {
 
       {skills.map(skill => (
 
-        <div key={skill} className="mb-3">
+        <div key={skill.id} className="mb-3">
 
-          <p className="text-sm">{skill}</p>
+          <p className="text-sm">{skill.name}</p>
 
           <input
             type="range"
             min="1"
             max="5"
             className="w-full"
-            onChange={e => updateScore(skill, Number(e.target.value))}
+            value={scores[skill.id] ?? 3}
+            onChange={e => updateScore(skill.id, Number(e.target.value))}
           />
 
         </div>
