@@ -1,38 +1,33 @@
 
-export default function Timeline({sessions,filter}){
-
-let list=sessions
-
-if(filter && filter!=='all'){
-list=sessions.filter(s=>s.location===filter)
-}
+export default function Timeline({sessions}){
 
 return(
-
 <div className="timeline">
 
-{list.map(s=>{
+{sessions.map(s=>{
 
 const d=new Date(s.date).toLocaleDateString()
 
 return(
-
-<div key={s.id} className="timeline-item">
+<div key={s.id} className="timelineItem">
 
 <b>{d}</b>
 
-<div style={{fontSize:'13px',color:'#9aa3b2'}}>{s.location}</div>
+<div className="skill">{s.location}</div>
 
-<div style={{fontSize:'13px'}}>{s.notes}</div>
+{s.skills.map((sk,i)=>(
+<div key={i} className="skill">
+• {sk.name} — {sk.result}
+</div>
+))}
+
+<div className="skill">{s.notes}</div>
 
 </div>
-
 )
 
 })}
 
 </div>
-
 )
-
 }

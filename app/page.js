@@ -3,6 +3,7 @@
 
 import {useEffect,useState} from 'react'
 import {supabase} from '../lib/supabaseClient'
+import {formatAge} from '../lib/age'
 import Link from 'next/link'
 
 export default function Home(){
@@ -18,28 +19,26 @@ const {data}=await supabase
 .select('*')
 .order('name')
 
-if(data)setDogs(data)
-
+setDogs(data||[])
 }
 
 return(
-
 <div>
 
 {dogs.map(d=>(
 
 <Link key={d.id} href={`/dogs/${d.id}`} className="card">
 
-<div style={{fontWeight:600,fontSize:'18px'}}>{d.name}</div>
+<div style={{fontWeight:600,fontSize:"18px"}}>{d.name}</div>
 
-<div style={{fontSize:'13px',color:'#9aa3b2'}}>{d.breed}</div>
+<div style={{fontSize:"13px",color:"#9aa3b2"}}>
+{d.breed} • {formatAge(d.birth_date)}
+</div>
 
 </Link>
 
 ))}
 
 </div>
-
 )
-
 }
