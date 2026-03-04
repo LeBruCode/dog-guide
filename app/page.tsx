@@ -2,20 +2,21 @@
 'use client'
 
 import {useEffect,useState} from 'react'
-import {supabase} from '@/lib/supabaseClient'
-import DogCard from '@/components/DogCard'
+import {supabase} from '../lib/supabaseClient'
+import DogCard from '../components/DogCard'
 
 export default function Page(){
 
-const [dogs,setDogs] = useState<any[]>([])
+const [dogs,setDogs]=useState<any[]>([])
 
-useEffect(()=>{
-load()
-},[])
+useEffect(()=>{load()},[])
 
 async function load(){
 
-const {data} = await supabase.from('dogs').select('*').order('name')
+const {data}=await supabase
+.from('dogs')
+.select('*')
+.order('name')
 
 if(data) setDogs(data)
 
@@ -31,10 +32,8 @@ return(
 Chiens en formation
 </h2>
 
-<a
-href="/dogs/new"
-className="bg-black text-white text-sm px-3 py-1 rounded"
->
+<a href="/dogs/new"
+className="bg-black text-white text-sm px-3 py-1 rounded">
 + Ajouter
 </a>
 

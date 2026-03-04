@@ -4,5 +4,5 @@
 @tailwind utilities;
 
 body{
- font-family: system-ui,-apple-system;
+font-family:system-ui,-apple-system;
 }

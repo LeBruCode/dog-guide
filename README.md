@@ -1,18 +1,13 @@
 
-Guide Dog Trainer V2.1
+Guide Dog Trainer V3.2
 
 Features:
-- Mobile UI
-- Dog dashboard
-- Dog profile with progress bars
-- Session history
-- Create session
-- PWA support
-- Render compatible start port
-
-Deploy on Render:
-Build command:
-npm install && npm run build
-
-Start command:
-npm start
+- Dashboard chiens
+- Fiche chien
+- Bouton nouvelle séance
+- Timeline séances
+- Photo séance
+- Slider notation compétences
+- Fiche séance détaillée
+- Historique compétences par séance
+- Compatible Render

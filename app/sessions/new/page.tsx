@@ -2,20 +2,58 @@
 'use client'
 
 import {useState} from 'react'
-import {supabase} from '@/lib/supabaseClient'
+import {supabase} from '../../../lib/supabaseClient'
+
+const skills=[
+"Marche au pied",
+"Arrêt trottoir",
+"Évitement obstacles",
+"Ignorer distractions"
+]
 
 export default function NewSession(){
 
 const [notes,setNotes]=useState('')
-const [success,setSuccess]=useState('bon')
+const [file,setFile]=useState<any>(null)
+const [scores,setScores]=useState<any>({})
+
+function updateScore(skill,value){
+setScores({...scores,[skill]:value})
+}
 
 async function save(){
 
-await supabase.from('training_sessions').insert({
+let photoUrl=null
+
+if(file){
+
+const fileName=Date.now()+"-"+file.name
+
+const {data}=await supabase.storage
+.from('session-photos')
+.upload(fileName,file)
+
+if(data){
+photoUrl=data.path
+}
+
+}
+
+const {data:session}=await supabase.from('training_sessions').insert({
 date:new Date(),
 notes,
-success_level:success
+photo_url:photoUrl
+}).select().single()
+
+for(const skill in scores){
+
+await supabase.from('session_skills').insert({
+session_id:session.id,
+skill_name:skill,
+score:scores[skill]
 })
+
+}
 
 alert('Séance enregistrée')
 
@@ -35,25 +73,37 @@ placeholder="Notes"
 onChange={e=>setNotes(e.target.value)}
 />
 
-<select
-className="border p-2 w-full rounded mb-4"
-onChange={e=>setSuccess(e.target.value)}
->
+<h3 className="font-semibold mb-2">Compétences</h3>
 
-<option>excellent</option>
-<option>bon</option>
-<option>moyen</option>
-<option>difficile</option>
+{skills.map(skill=>(
 
-</select>
+<div key={skill} className="mb-3">
+
+<p className="text-sm">{skill}</p>
+
+<input
+type="range"
+min="1"
+max="5"
+className="w-full"
+onChange={e=>updateScore(skill,e.target.value)}
+/>
+
+</div>
+
+))}
+
+<input
+type="file"
+className="mb-4"
+onChange={e=>setFile(e.target.files?.[0])}
+/>
 
 <button
 onClick={save}
 className="bg-black text-white w-full p-2 rounded"
 >
-
 Enregistrer
-
 </button>
 
 </div>
