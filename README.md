@@ -1,24 +1,18 @@
-# Guide Dog Training App
 
-Simple PWA for tracking guide dog training.
+Guide Dog Trainer V2.1
 
-## Stack
+Features:
+- Mobile UI
+- Dog dashboard
+- Dog profile with progress bars
+- Session history
+- Create session
+- PWA support
+- Render compatible start port
 
-Next.js  
-Supabase  
-Tailwind  
+Deploy on Render:
+Build command:
+npm install && npm run build
 
-## Setup
-
-1. Install dependencies
-
-npm install
-
-2. Create `.env.local`
-
-Use `.env.example`
-
-3. Run
-
-npm run dev
-
+Start command:
+npm start

@@ -1,38 +1,47 @@
+
 'use client'
 
-import { useEffect,useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
+import {useEffect,useState} from 'react'
+import {supabase} from '@/lib/supabaseClient'
 import DogCard from '@/components/DogCard'
 
-export default function Dashboard(){
+export default function Page(){
 
 const [dogs,setDogs] = useState<any[]>([])
 
 useEffect(()=>{
-
-fetchDogs()
-
+load()
 },[])
 
-async function fetchDogs(){
+async function load(){
 
-const {data,error} = await supabase
-.from('dogs')
-.select('*')
-.order('name')
+const {data} = await supabase.from('dogs').select('*').order('name')
 
 if(data) setDogs(data)
 
 }
 
-return (
+return(
 
-<div className="space-y-4">
+<div>
 
-{dogs.map((dog)=>(
+<div className="flex justify-between mb-4">
 
-<DogCard key={dog.id} dog={dog}/>
+<h2 className="text-xl font-semibold">
+Chiens en formation
+</h2>
 
+<a
+href="/dogs/new"
+className="bg-black text-white text-sm px-3 py-1 rounded"
+>
++ Ajouter
+</a>
+
+</div>
+
+{dogs.map(d=>(
+<DogCard key={d.id} dog={d}/>
 ))}
 
 </div>

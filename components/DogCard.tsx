@@ -1,23 +1,26 @@
+
+import Link from 'next/link'
+
 export default function DogCard({dog}:any){
 
-return (
+return(
 
-<div className="bg-white rounded-xl shadow p-4">
+<Link href={`/dogs/${dog.id}`}>
 
-<h2 className="text-xl font-semibold">{dog.name}</h2>
+<div className="bg-white rounded-xl shadow p-4 mb-3">
+
+<h2 className="font-semibold text-lg">{dog.name}</h2>
 
 <p className="text-sm text-gray-600">{dog.breed}</p>
 
-<p className="mt-2">
-Statut : 
-<span className="ml-1 font-medium">{dog.status}</span>
-</p>
-
-<p className="text-sm text-gray-500">
-Famille : {dog.family_name}
+<p className="text-sm mt-2">
+Statut : <span className="font-medium">{dog.status}</span>
 </p>
 
 </div>
 
+</Link>
+
 )
+
 }
