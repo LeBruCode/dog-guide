@@ -11,6 +11,7 @@ export default function Dog({params}){
 const [dog,setDog]=useState(null)
 const [sessions,setSessions]=useState([])
 const [skills,setSkills]=useState([])
+const [filter,setFilter]=useState('all')
 
 useEffect(()=>{load()},[])
 
@@ -30,7 +31,7 @@ const {data:s}=await supabase
 .eq('dog_id',params.id)
 .order('date',{ascending:false})
 
-setSessions(s || [])
+setSessions(s||[])
 
 const {data:skillData}=await supabase
 .from('session_skills')
@@ -42,8 +43,7 @@ let map={}
 
 skillData.forEach(x=>{
 
-if(!map[x.skill_name]) map[x.skill_name]=[]
-
+if(!map[x.skill_name])map[x.skill_name]=[]
 map[x.skill_name].push(x.score)
 
 })
@@ -52,7 +52,7 @@ let list=[]
 
 for(const k in map){
 
-let avg = map[k].reduce((a,b)=>a+b,0)/map[k].length
+let avg=map[k].reduce((a,b)=>a+b,0)/map[k].length
 
 list.push({
 skill:k,
@@ -67,7 +67,7 @@ setSkills(list)
 
 }
 
-if(!dog) return <div>Chargement...</div>
+if(!dog)return<div>Chargement...</div>
 
 return(
 
@@ -77,18 +77,20 @@ return(
 
 <h2>{dog.name}</h2>
 
-<div style={{fontSize:"13px",color:"#666"}}>{dog.breed}</div>
+<div style={{color:'#9aa3b2'}}>{dog.breed}</div>
+
+<a className="btn" href={`/sessions/new?dog=${params.id}`}>
+Nouvelle séance
+</a>
 
 </div>
 
 <div className="card">
 
-<h3>Progression par compétence</h3>
+<h3>Progression compétences</h3>
 
 {skills.map(s=>(
-
 <SkillProgress key={s.skill} skill={s.skill} value={s.value}/>
-
 ))}
 
 </div>
@@ -97,7 +99,16 @@ return(
 
 <h3>Timeline</h3>
 
-<Timeline sessions={sessions}/>
+<select value={filter} onChange={e=>setFilter(e.target.value)}>
+
+<option value="all">Tous</option>
+<option value="Ville">Ville</option>
+<option value="Parc">Parc</option>
+<option value="Centre">Centre</option>
+
+</select>
+
+<Timeline sessions={sessions} filter={filter}/>
 
 </div>
 

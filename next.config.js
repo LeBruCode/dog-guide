@@ -1,6 +1,6 @@
 
-const nextConfig = {
-  reactStrictMode:true,
-  output:'standalone'
+const nextConfig={
+reactStrictMode:true,
+output:'standalone'
 }
-module.exports = nextConfig
+module.exports=nextConfig
