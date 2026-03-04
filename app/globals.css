@@ -1,12 +1,12 @@
 
 body{
 font-family:system-ui;
-background:linear-gradient(180deg,#f4f6fb,#eef1f8);
+background:#f4f6fb;
 margin:0;
 }
 
 .container{
-max-width:720px;
+max-width:760px;
 margin:auto;
 padding:24px;
 padding-bottom:110px;
@@ -15,14 +15,14 @@ padding-bottom:110px;
 .header{
 font-size:26px;
 font-weight:700;
-margin-bottom:24px;
+margin-bottom:20px;
 }
 
 .card{
 background:white;
 padding:20px;
-border-radius:16px;
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
+border-radius:14px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
 margin-bottom:16px;
 }
 
@@ -35,47 +35,48 @@ border:none;
 cursor:pointer;
 }
 
-.nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:white;
-border-top:1px solid #e5e7eb;
-display:flex;
-justify-content:space-around;
-padding:14px;
-font-size:14px;
-}
-
-.progress-bar{
+.progress{
 height:10px;
 background:#e5e7eb;
 border-radius:6px;
 overflow:hidden;
-margin-top:4px;
+margin-top:6px;
 }
 
-.progress-value{
+.progress-bar{
 height:100%;
 background:#22c55e;
 }
 
 .timeline{
 border-left:2px solid #e5e7eb;
-padding-left:12px;
-margin-top:12px;
+padding-left:14px;
 }
 
 .timeline-item{
-margin-bottom:12px;
-font-size:14px;
+margin-bottom:14px;
 }
 
-textarea,select{
+.timeline-date{
+font-weight:600;
+}
+
+input,select,textarea{
 width:100%;
 padding:10px;
-border-radius:10px;
+border-radius:8px;
 border:1px solid #ddd;
-margin-bottom:12px;
+margin-bottom:10px;
+}
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+border-top:1px solid #eee;
+display:flex;
+justify-content:space-around;
+padding:14px;
 }

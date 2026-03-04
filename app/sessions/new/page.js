@@ -1,10 +1,10 @@
 
 export const dynamic='force-dynamic'
 
-import Client from "./sessionClient"
+import SessionClient from "./sessionClient"
 
 export default function Page({searchParams}){
 
-return <Client dogId={searchParams?.dog}/>
+return <SessionClient dogId={searchParams?.dog}/>
 
 }
