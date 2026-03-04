@@ -34,5 +34,4 @@ backgroundColor:'rgba(34,197,94,0.2)'
 }
 
 return <Line data={data}/>
-
 }

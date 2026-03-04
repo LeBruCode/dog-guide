@@ -6,7 +6,6 @@ export default function ScoreSelector({value,onChange}){
 const scores=[1,2,3,4,5]
 
 return (
-
 <div className="score-buttons">
 
 {scores.map(s=>(
@@ -20,7 +19,5 @@ onClick={()=>onChange(s)}
 ))}
 
 </div>
-
 )
-
 }

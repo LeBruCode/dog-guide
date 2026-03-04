@@ -63,38 +63,27 @@ return {date:s.date,score:avg}
 })
 
 setPoints(chart)
-
 }
 
 if(!dog) return <div>Chargement...</div>
 
 return(
-
 <div>
 
 <div className="card">
-
 <h2>{dog.name}</h2>
 
-<Link
-href={`/sessions/new?dog=${params.id}`}
-className="btn"
->
+<Link href={`/sessions/new?dog=${params.id}`} className="btn">
 Nouvelle séance
 </Link>
 
 </div>
 
 <div className="card">
-
 <h3>Progression</h3>
-
 <ProgressChart points={points}/>
-
 </div>
 
 </div>
-
 )
-
 }
