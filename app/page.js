@@ -22,19 +22,28 @@ const {data}=await supabase
 .select('*')
 .order('name')
 
-if(data) setDogs(data)
+if(data)setDogs(data)
+
 }
 
 return(
+
 <div>
 
 {dogs.map(d=>(
+
 <Link key={d.id} href={`/dogs/${d.id}`} className="card">
+
 <div style={{fontWeight:600,fontSize:18}}>{d.name}</div>
+
 <div style={{fontSize:13,color:"#6b7280"}}>{d.breed}</div>
+
 </Link>
+
 ))}
 
 </div>
+
 )
+
 }

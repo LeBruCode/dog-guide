@@ -1,7 +1,7 @@
 
 'use client'
 
-import { Line } from 'react-chartjs-2'
+import {Line} from 'react-chartjs-2'
 import {
 Chart as ChartJS,
 CategoryScale,
@@ -34,4 +34,5 @@ backgroundColor:'rgba(34,197,94,0.2)'
 }
 
 return <Line data={data}/>
+
 }

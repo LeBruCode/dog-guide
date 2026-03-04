@@ -3,21 +3,12 @@
 
 import {useEffect,useState} from 'react'
 import {supabase} from '../../../lib/supabaseClient'
-import ScoreSelector from '../../../components/ScoreSelector'
 
-const skills=[
-"Marche au pied",
-"Arrêt trottoir",
-"Évitement obstacles",
-"Ignorer distractions"
-]
-
-export default function NewSessionClient({dogId:initialDog}){
+export default function SessionClient({dogId:initialDog}){
 
 const [dogs,setDogs]=useState([])
-const [dogId,setDogId]=useState(initialDog || "")
+const [dogId,setDogId]=useState(initialDog||"")
 const [notes,setNotes]=useState("")
-const [scores,setScores]=useState({})
 
 useEffect(()=>{
 loadDogs()
@@ -31,39 +22,21 @@ const {data}=await supabase
 .order('name')
 
 if(data)setDogs(data)
-}
 
-function updateScore(skill,val){
-setScores({...scores,[skill]:val})
 }
 
 async function save(){
 
-if(!dogId){
-alert("Choisir un chien")
-return
-}
-
-const {data:session}=await supabase
+const {data}=await supabase
 .from('training_sessions')
 .insert({
 dog_id:dogId,
 date:new Date(),
 notes
 })
-.select()
-.single()
-
-for(const skill in scores){
-
-await supabase.from('session_skills').insert({
-session_id:session.id,
-skill_name:skill,
-score:scores[skill]
-})
-}
 
 alert("Séance enregistrée")
+
 }
 
 return(
@@ -72,15 +45,10 @@ return(
 
 <h2>Nouvelle séance</h2>
 
-<select
-value={dogId}
-onChange={e=>setDogId(e.target.value)}
->
+<select value={dogId} onChange={e=>setDogId(e.target.value)}>
 <option value="">Sélectionner un chien</option>
 {dogs.map(d=>(
-<option key={d.id} value={d.id}>
-{d.name}
-</option>
+<option key={d.id} value={d.id}>{d.name}</option>
 ))}
 </select>
 
@@ -89,20 +57,7 @@ placeholder="Notes"
 onChange={e=>setNotes(e.target.value)}
 />
 
-{skills.map(skill=>(
-
-<div key={skill}>
-
-<div className="skill-title">{skill}</div>
-
-<ScoreSelector
-value={scores[skill]}
-onChange={(v)=>updateScore(skill,v)}
-/>
-
-</div>
-
-))}
+<input type="file" accept="image/*" />
 
 <button className="btn" onClick={save}>
 Enregistrer
@@ -111,4 +66,5 @@ Enregistrer
 </div>
 
 )
+
 }

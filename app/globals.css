@@ -1,6 +1,6 @@
 
 body{
-font-family:system-ui,-apple-system,BlinkMacSystemFont;
+font-family:system-ui;
 background:linear-gradient(180deg,#f4f6fb,#eef1f8);
 margin:0;
 }
@@ -9,7 +9,7 @@ margin:0;
 max-width:720px;
 margin:auto;
 padding:24px;
-padding-bottom:100px;
+padding-bottom:110px;
 }
 
 .header{
@@ -24,11 +24,6 @@ padding:20px;
 border-radius:16px;
 box-shadow:0 8px 20px rgba(0,0,0,0.08);
 margin-bottom:16px;
-transition:transform .1s ease;
-}
-
-.card:hover{
-transform:translateY(-2px);
 }
 
 .btn{
@@ -38,7 +33,6 @@ padding:10px 14px;
 border-radius:10px;
 border:none;
 cursor:pointer;
-font-weight:500;
 }
 
 .nav{
@@ -54,26 +48,28 @@ padding:14px;
 font-size:14px;
 }
 
-.score-buttons{
-display:flex;
-gap:8px;
-margin-top:6px;
+.progress-bar{
+height:10px;
+background:#e5e7eb;
+border-radius:6px;
+overflow:hidden;
+margin-top:4px;
 }
 
-.score-btn{
-flex:1;
-padding:10px;
-border-radius:10px;
-border:1px solid #ddd;
-text-align:center;
-cursor:pointer;
-font-weight:500;
-}
-
-.score-active{
+.progress-value{
+height:100%;
 background:#22c55e;
-color:white;
-border-color:#22c55e;
+}
+
+.timeline{
+border-left:2px solid #e5e7eb;
+padding-left:12px;
+margin-top:12px;
+}
+
+.timeline-item{
+margin-bottom:12px;
+font-size:14px;
 }
 
 textarea,select{
@@ -82,9 +78,4 @@ padding:10px;
 border-radius:10px;
 border:1px solid #ddd;
 margin-bottom:12px;
-}
-
-.skill-title{
-font-size:14px;
-margin-top:8px;
 }

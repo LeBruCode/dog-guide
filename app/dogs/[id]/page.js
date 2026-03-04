@@ -6,12 +6,13 @@ export const dynamic='force-dynamic'
 import {useEffect,useState} from 'react'
 import {supabase} from '../../../lib/supabaseClient'
 import ProgressChart from '../../../components/ProgressChart'
-import Link from 'next/link'
+import Timeline from '../../../components/Timeline'
 
 export default function Dog({params}){
 
 const [dog,setDog]=useState(null)
 const [points,setPoints]=useState([])
+const [sessions,setSessions]=useState([])
 
 useEffect(()=>{
 load()
@@ -27,63 +28,59 @@ const {data}=await supabase
 
 setDog(data)
 
-const {data:sessions}=await supabase
+const {data:s}=await supabase
 .from('training_sessions')
-.select('id,date')
+.select('*')
 .eq('dog_id',params.id)
 .order('date',{ascending:true})
 
-if(!sessions) return
+setSessions(s || [])
 
-const ids=sessions.map(s=>s.id)
+if(!s)return
 
-const {data:skills}=await supabase
-.from('session_skills')
-.select('session_id,score')
-.in('session_id',ids)
-
-let map={}
-
-skills?.forEach(s=>{
-if(!map[s.session_id]) map[s.session_id]=[]
-map[s.session_id].push(s.score)
-})
-
-let chart=sessions.map(s=>{
-
-let scores=map[s.id]||[]
-let avg=0
-
-if(scores.length){
-avg=scores.reduce((a,b)=>a+b,0)/scores.length
-}
-
-return {date:s.date,score:avg}
-
-})
+let chart=s.map(x=>({
+date:x.date,
+score:3
+}))
 
 setPoints(chart)
+
 }
 
-if(!dog) return <div>Chargement...</div>
+if(!dog)return<div>Chargement...</div>
 
 return(
+
 <div>
 
 <div className="card">
+
 <h2>{dog.name}</h2>
 
-<Link href={`/sessions/new?dog=${params.id}`} className="btn">
+<a className="btn" href={`/sessions/new?dog=${params.id}`}>
 Nouvelle séance
-</Link>
+</a>
 
 </div>
 
 <div className="card">
+
 <h3>Progression</h3>
+
 <ProgressChart points={points}/>
+
+</div>
+
+<div className="card">
+
+<h3>Timeline</h3>
+
+<Timeline sessions={sessions}/>
+
 </div>
 
 </div>
+
 )
+
 }
