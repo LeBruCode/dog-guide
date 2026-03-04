@@ -1,136 +1,177 @@
-
 'use client'
 
-import {useEffect,useState} from 'react'
-import {useSearchParams} from 'next/navigation'
-import {supabase} from '../../../lib/supabaseClient'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { supabase } from '../../../lib/supabaseClient'
 
-const skills=[
-"Marche au pied",
-"Arrêt trottoir",
-"Évitement obstacles",
-"Ignorer distractions"
+const skills = [
+  "Marche au pied",
+  "Arrêt trottoir",
+  "Évitement obstacles",
+  "Ignorer distractions"
 ]
 
-export default function NewSession(){
+export default function NewSession() {
 
-const params=useSearchParams()
+  const params = useSearchParams()
 
-const [dogs,setDogs]=useState<any[]>([])
-const [dogId,setDogId]=useState('')
-const [notes,setNotes]=useState('')
-const [scores,setScores]=useState<any>({})
+  const [dogs, setDogs] = useState<any[]>([])
+  const [dogId, setDogId] = useState('')
+  const [notes, setNotes] = useState('')
+  const [scores, setScores] = useState<Record<string, number>>({})
+  const [loading, setLoading] = useState(false)
 
-useEffect(()=>{
-loadDogs()
+  useEffect(() => {
+    loadDogs()
 
-const dog=params.get("dog")
-if(dog) setDogId(dog)
+    const dog = params.get("dog")
+    if (dog) setDogId(dog)
 
-},[])
+  }, [])
 
-async function loadDogs(){
+  async function loadDogs() {
 
-const {data}=await supabase
-.from('dogs')
-.select('*')
-.order('name')
+    const { data, error } = await supabase
+      .from('dogs')
+      .select('*')
+      .order('name')
 
-if(data) setDogs(data)
+    if (error) {
+      console.error(error)
+      return
+    }
 
-}
+    if (data) setDogs(data)
 
-function updateScore(skill,value){
-setScores({...scores,[skill]:value})
-}
+  }
 
-async function save(){
+  function updateScore(skill: string, value: number) {
 
-if(!dogId){
-alert("Choisir un chien")
-return
-}
+    setScores(prev => ({
+      ...prev,
+      [skill]: value
+    }))
 
-const {data:session}=await supabase
-.from('training_sessions')
-.insert({
-dog_id:dogId,
-date:new Date(),
-notes
-})
-.select()
-.single()
+  }
 
-for(const skill in scores){
+  async function save() {
 
-await supabase.from('session_skills').insert({
-session_id:session.id,
-skill_name:skill,
-score:scores[skill]
-})
+    if (!dogId) {
+      alert("Choisir un chien")
+      return
+    }
 
-}
+    setLoading(true)
 
-alert("Séance enregistrée")
+    try {
 
-}
+      const { data: session, error: sessionError } = await supabase
+        .from('training_sessions')
+        .insert({
+          dog_id: dogId,
+          date: new Date(),
+          notes
+        })
+        .select()
+        .single()
 
-return(
+      if (sessionError) throw sessionError
 
-<div className="bg-white p-4 rounded-xl shadow">
+      const skillsData = Object.entries(scores).map(([skill, score]) => ({
+        session_id: session.id,
+        skill_name: skill,
+        score
+      }))
 
-<h2 className="text-xl font-semibold mb-3">
-Nouvelle séance
-</h2>
+      if (skillsData.length > 0) {
 
-<h3 className="font-semibold mb-2">Chien</h3>
+        const { error: skillsError } = await supabase
+          .from('session_skills')
+          .insert(skillsData)
 
-<select
-className="border p-2 w-full rounded mb-4"
-value={dogId}
-onChange={(e)=>setDogId(e.target.value)}
->
+        if (skillsError) throw skillsError
 
-<option value="">Sélectionner un chien</option>
+      }
 
-{dogs.map(d=>(
-<option key={d.id} value={d.id}>
-{d.name}
-</option>
-))}
+      alert("Séance enregistrée")
 
-</select>
+      setScores({})
+      setNotes("")
 
-<textarea
-className="border p-2 w-full rounded mb-3"
-placeholder="Notes"
-onChange={e=>setNotes(e.target.value)}
-/>
+    } catch (err) {
 
-<h3 className="font-semibold mb-2">Compétences</h3>
+      console.error(err)
+      alert("Erreur lors de l'enregistrement")
 
-{skills.map(skill=>(
-<div key={skill} className="mb-3">
-<p className="text-sm">{skill}</p>
-<input
-type="range"
-min="1"
-max="5"
-className="w-full"
-onChange={e=>updateScore(skill,e.target.value)}
-/>
-</div>
-))}
+    }
 
-<button
-onClick={save}
-className="bg-black text-white w-full p-2 rounded"
->
-Enregistrer
-</button>
+    setLoading(false)
 
-</div>
+  }
 
-)
+  return (
+
+    <div className="bg-white p-4 rounded-xl shadow">
+
+      <h2 className="text-xl font-semibold mb-3">
+        Nouvelle séance
+      </h2>
+
+      <h3 className="font-semibold mb-2">Chien</h3>
+
+      <select
+        className="border p-2 w-full rounded mb-4"
+        value={dogId}
+        onChange={(e) => setDogId(e.target.value)}
+      >
+
+        <option value="">Sélectionner un chien</option>
+
+        {dogs.map(d => (
+          <option key={d.id} value={d.id}>
+            {d.name}
+          </option>
+        ))}
+
+      </select>
+
+      <textarea
+        className="border p-2 w-full rounded mb-3"
+        placeholder="Notes"
+        value={notes}
+        onChange={e => setNotes(e.target.value)}
+      />
+
+      <h3 className="font-semibold mb-2">Compétences</h3>
+
+      {skills.map(skill => (
+
+        <div key={skill} className="mb-3">
+
+          <p className="text-sm">{skill}</p>
+
+          <input
+            type="range"
+            min="1"
+            max="5"
+            className="w-full"
+            onChange={e => updateScore(skill, Number(e.target.value))}
+          />
+
+        </div>
+
+      ))}
+
+      <button
+        onClick={save}
+        disabled={loading}
+        className="bg-black text-white w-full p-2 rounded disabled:opacity-50"
+      >
+        {loading ? "Enregistrement..." : "Enregistrer"}
+      </button>
+
+    </div>
+
+  )
 
 }
